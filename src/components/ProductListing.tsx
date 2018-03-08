@@ -21,6 +21,7 @@ export class ProductListing extends React.Component<Props> {
       <tr>
         <th>{productItem.item.name} ({productItem.item.code})</th>
         <td>${productItem.item.price.toFixed(2)}</td>
+        <td>{productItem.quantity}</td>
       </tr>
     );
   }
@@ -37,6 +38,7 @@ export class ProductListing extends React.Component<Props> {
         <tr>
           <th>Name (Code)</th>
           <th>Price</th>
+          <th>Stock Level</th>
         </tr>
         {this.props.productItems.map((productItem) => this.renderItem(productItem))}
       </Table>
