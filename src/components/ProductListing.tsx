@@ -15,7 +15,7 @@ export interface OwnProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-export class ProductSelector extends React.Component<Props> {
+export class ProductListing extends React.Component<Props> {
   renderItem(productItem: ProductItem) {
     return (
       <tr>

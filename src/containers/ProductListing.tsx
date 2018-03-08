@@ -1,6 +1,6 @@
 import { connect, Dispatch } from 'react-redux';
 
-import { ProductSelector, StateProps, DispatchProps, OwnProps } from '../components/ProductSelector';
+import { ProductListing, StateProps, DispatchProps, OwnProps } from '../components/ProductListing';
 import { StoreState } from '../types';
 
 export const mapStateToProps = (state: StoreState): StateProps => {
@@ -10,7 +10,7 @@ export const mapStateToProps = (state: StoreState): StateProps => {
     };
 };
 
-export const mapDispatchToProps = (dispatch: Dispatch<ProductSelector>): DispatchProps => {
+export const mapDispatchToProps = (dispatch: Dispatch<ProductListing>): DispatchProps => {
     return {
     };
 };
@@ -18,4 +18,4 @@ export const mapDispatchToProps = (dispatch: Dispatch<ProductSelector>): Dispatc
 export default connect<StateProps, DispatchProps, OwnProps>(
     mapStateToProps,
     mapDispatchToProps
-)(ProductSelector);
+)(ProductListing);

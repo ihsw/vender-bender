@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 
-import ProductSelector from '../containers/ProductSelector';
+import ProductListing from '../containers/ProductListing';
 
 export class App extends React.Component {
   render() {
@@ -10,7 +10,7 @@ export class App extends React.Component {
         <Row>
           <Col md={6} xsOffset={3}>
             <h1>Virtual Vendor Machine</h1>
-            <ProductSelector />
+            <ProductListing />
           </Col>
         </Row>
       </Grid>
