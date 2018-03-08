@@ -8,7 +8,18 @@ import { StoreState } from './types';
 import { App } from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 
-const preloadedState: StoreState = {};
+const preloadedState: StoreState = {
+  productItems: [
+    {
+      item: {
+        code: 'A1',
+        name: 'Chips',
+        price: 1.99
+      },
+      quantity: 1
+    }
+  ]
+};
 const store = createStore<StoreState>(vendors, preloadedState);
 
 ReactDOM.render(

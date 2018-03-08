@@ -1,14 +1,16 @@
 import * as React from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 
+import ProductSelector from '../containers/ProductSelector';
+
 export class App extends React.Component {
   render() {
     return (
       <Grid>
         <Row>
-          <Col>
+          <Col md={6} xsOffset={3}>
             <h1>Virtual Vendor Machine</h1>
-            <p>Hello, world!</p>
+            <ProductSelector />
           </Col>
         </Row>
       </Grid>
