@@ -97,11 +97,11 @@ export class ProductSelector extends React.Component<Props, State> {
         );
       }
 
-      return <p>Please enter a code and money.</p>;
+      return <p>This vending machine has delicious treats!</p>;
     }
 
     return (
-      <p>By clicking <strong>Order</strong>, you will order item {code} with ${Number(money).toFixed(2)}.</p>
+      <p>By clicking <strong>Order food</strong>, you will order item {code} with ${Number(money).toFixed(2)}.</p>
     );
   }
 
@@ -111,13 +111,19 @@ export class ProductSelector extends React.Component<Props, State> {
     return (
       <div>
         <Alert bsStyle="info">
-          <h4>Order Input</h4>
+          <h4>Order from Vending Machine</h4>
           {this.renderMessage()}
         </Alert>
         <Form inline={true} onSubmit={(e) => this.onSubmit(e)}>
           <FormGroup>
             <ControlLabel>Code</ControlLabel>{' '}
-            <FormControl name="code" type="text" value={code} onChange={(e) => this.setCode(e as any)} />
+            <FormControl
+              name="code"
+              type="text"
+              value={code}
+              placeholder="e.g. A1"
+              onChange={(e) => this.setCode(e as any)}
+            />
           </FormGroup>{' '}
           <FormGroup>
             <ControlLabel>Money</ControlLabel>{' '}
@@ -125,6 +131,7 @@ export class ProductSelector extends React.Component<Props, State> {
               name="money"
               type="text"
               value={money || ''}
+              placeholder="e.g. 2.00"
               onChange={(e) => this.setMoney(e as any)}
             />
           </FormGroup>{' '}
