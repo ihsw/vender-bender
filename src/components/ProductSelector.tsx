@@ -41,11 +41,8 @@ export class ProductSelector extends React.Component<Props, State> {
   }
 
   canSubmit(): boolean {
-    const money = Number(this.state.money);
-
     return this.validateCode(this.state.code) === null
-      && !isNaN(money)
-      && money > 0;
+      && this.validateMoney(this.state.money) === null;
   }
 
   validateCode(code: string): string | null {
@@ -88,22 +85,45 @@ export class ProductSelector extends React.Component<Props, State> {
     });
   }
 
+  validateMoney(money: string): string | null {
+    const providedMoney = Number(money);
+    if (isNaN(providedMoney)) {
+      return 'Money is not a valid number!';
+    }
+
+    if (providedMoney <= 0) {
+      return 'Money must be greater than zero!';
+    }
+
+    const selectedProductItem = this.state.selectedProductItem;
+    if (selectedProductItem !== null && providedMoney < selectedProductItem.item.price) {
+      return `Insert more money than $${
+        providedMoney.toFixed(2)
+      } to purchase ${selectedProductItem.item.name} ${selectedProductItem.item.name}`;
+    }
+
+    return null;
+  }
+
   setMoney(e: React.ChangeEvent<HTMLInputElement>) {
+    const validationErrors = this.state.validationErrors;
     const money = e.target.value;
-    if (isNaN(Number(money))) {
+    const error = this.validateMoney(money);
+
+    if (error !== null) {
       this.setState({
-        money: money,
+        money,
         validationErrors: {
-          ...this.state.validationErrors,
-          'money': 'Money is not a valid number!'
+          ...validationErrors,
+          'money': error
         }
       });
 
       return;
     }
 
-    const validationErrors = {...this.state.validationErrors};
     delete validationErrors['money'];
+
     this.setState({money, validationErrors});
   }
 
