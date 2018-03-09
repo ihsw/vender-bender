@@ -11,12 +11,24 @@ import registerServiceWorker from './registerServiceWorker';
 const preloadedState: StoreState = {
   productItems: [
     {
-      item: {
-        code: 'A1',
-        name: 'Chips',
-        price: 1.99
-      },
-      quantity: 1
+      item: {code: 'A1', name: 'Chips', price: 1.99},
+      isNew: true,
+      quantity: 7
+    },
+    {
+      item: {code: 'A2', name: 'Cookies', price: 0.99},
+      isNew: true,
+      isPopular: true,
+      quantity: 4
+    },
+    {
+      item: {code: 'A3', name: '3 Avocados', price: 0.49},
+      quantity: 10,
+      isOnSale: true
+    },
+    {
+      item: {code: 'A4', name: 'Stale Crackers', price: 0.39},
+      quantity: 20
     }
   ]
 };

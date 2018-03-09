@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Table } from 'react-bootstrap';
+import { Table, Label } from 'react-bootstrap';
 
 import { ProductItem } from '../types';
 
@@ -19,7 +19,12 @@ export class ProductListing extends React.Component<Props> {
   renderItem(productItem: ProductItem, i: number) {
     return (
       <tr key={i}>
-        <th>{productItem.item.name} ({productItem.item.code})</th>
+        <th>
+          {productItem.item.name} ({productItem.item.code})
+          {productItem.isNew && <Label bsStyle="primary" style={{marginLeft: '5px'}}>New!</Label>}
+          {productItem.isPopular && <Label bsStyle="success" style={{marginLeft: '5px'}}>Popular!</Label>}
+          {productItem.isOnSale && <Label bsStyle="success" style={{marginLeft: '5px'}}>Sale!</Label>}
+        </th>
         <td>${productItem.item.price.toFixed(2)}</td>
         <td>{productItem.quantity}</td>
       </tr>

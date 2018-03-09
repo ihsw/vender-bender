@@ -4,6 +4,9 @@ export interface StoreState {
 
 export interface ProductItem {
     item: Product;
+    isNew?: boolean;
+    isPopular?: boolean;
+    isOnSale?: boolean;
     quantity: number;
 }
 
