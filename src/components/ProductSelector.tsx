@@ -12,7 +12,7 @@ export interface OwnProps {
 
 interface State {
   code: string;
-  money: number | null;
+  money: string;
   validationErrors: {[key: string]: string};
 }
 
@@ -24,7 +24,7 @@ export class ProductSelector extends React.Component<Props, State> {
 
     this.state = {
       code: '',
-      money: 0,
+      money: '0',
       validationErrors: {}
     };
   }
@@ -36,9 +36,11 @@ export class ProductSelector extends React.Component<Props, State> {
   }
 
   canSubmit(): boolean {
+    const money = Number(this.state.money);
+
     return this.state.code.length > 0
-      && this.state.money !== null
-      && this.state.money > 0;
+      && !isNaN(money)
+      && money > 0;
   }
 
   setCode(e: React.ChangeEvent<HTMLInputElement>) {
@@ -48,7 +50,7 @@ export class ProductSelector extends React.Component<Props, State> {
         code,
         validationErrors: {
           ...this.state.validationErrors,
-          'code': 'Code is not a valid code!'
+          'code': 'Code is blank!'
         }
       });
     }
@@ -57,11 +59,10 @@ export class ProductSelector extends React.Component<Props, State> {
   }
 
   setMoney(e: React.ChangeEvent<HTMLInputElement>) {
-    let money: number | null = Number(e.target.value);
-    if (isNaN(money)) {
-      money = null;
+    const money = e.target.value;
+    if (isNaN(Number(money))) {
       this.setState({
-        money,
+        money: money,
         validationErrors: {
           ...this.state.validationErrors,
           'money': 'Money is not a valid number!'
@@ -77,31 +78,30 @@ export class ProductSelector extends React.Component<Props, State> {
   }
 
   renderMessage() {
+    let { code, money, validationErrors } = this.state;
+
     if (!this.canSubmit()) {
+      const keys = Object.keys(validationErrors);
+      if (keys.length > 0) {
+        return (
+          <div>
+            <p>Please enter a code and money.</p>
+            <ul>
+              {keys.map((errorKey, i) => {
+                return (
+                  <li key={i}>{validationErrors[errorKey]}</li>
+                );
+              })}
+            </ul>
+          </div>
+        );
+      }
+
       return <p>Please enter a code and money.</p>;
     }
 
-    let { code, money, validationErrors } = this.state;
-
-    const keys = Object.keys(validationErrors);
-    if (keys.length > 0) {
-      return (
-        <ul>
-          {keys.map((errorKey, i) => {
-            return (
-              <li key={i}>{validationErrors[errorKey]}</li>
-            );
-          })}
-        </ul>
-      );
-    }
-
-    if (money === null) {
-      money = 0;
-    }
-
     return (
-      <p>By clicking <strong>Order</strong>, you will order item {code} with ${money.toFixed(2)}.</p>
+      <p>By clicking <strong>Order</strong>, you will order item {code} with ${Number(money).toFixed(2)}.</p>
     );
   }
 
