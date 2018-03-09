@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { Alert, Form, FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
 
+import { ProductItem } from '../types';
+
 export interface StateProps {
+  productItems: ProductItem[];
 }
 
 export interface DispatchProps {
@@ -14,6 +17,7 @@ interface State {
   code: string;
   money: string;
   validationErrors: {[key: string]: string};
+  selectedProductItem: ProductItem | null;
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
@@ -25,7 +29,8 @@ export class ProductSelector extends React.Component<Props, State> {
     this.state = {
       code: '',
       money: '0',
-      validationErrors: {}
+      validationErrors: {},
+      selectedProductItem: null
     };
   }
 
@@ -38,24 +43,49 @@ export class ProductSelector extends React.Component<Props, State> {
   canSubmit(): boolean {
     const money = Number(this.state.money);
 
-    return this.state.code.length > 0
+    return this.validateCode(this.state.code) === null
       && !isNaN(money)
       && money > 0;
   }
 
-  setCode(e: React.ChangeEvent<HTMLInputElement>) {
-    const code = e.target.value;
+  validateCode(code: string): string | null {
     if (code.length === 0) {
+      return 'Code is blank!';
+    }
+
+    const validCodes = this.props.productItems.map((productItem) => productItem.item.code);
+    if (validCodes.indexOf(code) === -1) {
+      return 'Code is not valid!';
+    }
+
+    return null;
+  }
+
+  setCode(e: React.ChangeEvent<HTMLInputElement>) {
+    const validationErrors = this.state.validationErrors;
+    const code = e.target.value;
+    const error = this.validateCode(code);
+
+    if (error !== null) {
       this.setState({
         code,
         validationErrors: {
-          ...this.state.validationErrors,
-          'code': 'Code is blank!'
+          ...validationErrors,
+          'code': error
         }
       });
+
+      return;
     }
 
-    this.setState({code: code});
+    const validCodes = this.props.productItems.map((productItem) => productItem.item.code);
+    delete validationErrors['code'];
+
+    this.setState({
+      code,
+      validationErrors,
+      selectedProductItem: this.props.productItems[validCodes.indexOf(code)]
+    });
   }
 
   setMoney(e: React.ChangeEvent<HTMLInputElement>) {
@@ -78,7 +108,7 @@ export class ProductSelector extends React.Component<Props, State> {
   }
 
   renderMessage() {
-    let { code, money, validationErrors } = this.state;
+    let { code, money, validationErrors, selectedProductItem } = this.state;
 
     if (!this.canSubmit()) {
       const keys = Object.keys(validationErrors);
@@ -100,8 +130,15 @@ export class ProductSelector extends React.Component<Props, State> {
       return <p>This vending machine has delicious treats!</p>;
     }
 
+    if (selectedProductItem === null) {
+      return <p>No product selected!</p>;
+    }
+
     return (
-      <p>By clicking <strong>Order food</strong>, you will order item {code} with ${Number(money).toFixed(2)}.</p>
+      <p>
+        By clicking <strong>Order food</strong>,
+        you will order item <strong>{selectedProductItem.item.name} ({code})</strong> with ${Number(money).toFixed(2)}.
+      </p>
     );
   }
 

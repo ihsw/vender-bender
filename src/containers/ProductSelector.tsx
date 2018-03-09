@@ -4,14 +4,18 @@ import { ProductSelector, StateProps, DispatchProps, OwnProps } from '../compone
 import { StoreState } from '../types';
 
 export const mapStateToProps = (state: StoreState): StateProps => {
-    return {};
+  const { productItems } = state;
+
+  return {
+    productItems
+  };
 };
 
 export const mapDispatchToProps = (dispatch: Dispatch<ProductSelector>): DispatchProps => {
-    return {};
+  return {};
 };
 
 export default connect<StateProps, DispatchProps, OwnProps>(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(ProductSelector);
