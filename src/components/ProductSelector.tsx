@@ -13,10 +13,19 @@ export interface DispatchProps {
 export interface OwnProps {
 }
 
-interface State {
+interface FormData {
   code: string;
   money: string;
-  validationErrors: {[key: string]: string};
+  [key: string]: any;
+}
+
+interface ValidationErrors {
+  [key: string]: string;
+}
+
+interface State {
+  formData: FormData;
+  validationErrors: ValidationErrors;
   selectedProductItem: ProductItem | null;
 }
 
@@ -27,8 +36,10 @@ export class ProductSelector extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      code: '',
-      money: '0',
+      formData: {
+        code: '',
+        money: ''
+      },
       validationErrors: {},
       selectedProductItem: null
     };
@@ -41,8 +52,16 @@ export class ProductSelector extends React.Component<Props, State> {
   }
 
   canSubmit(): boolean {
-    return this.validateCode(this.state.code) === null
-      && this.validateMoney(this.state.money) === null;
+    return this.validateCode(this.state.formData.code) === null
+      && this.validateMoney(this.state.formData.money) === null;
+  }
+
+  onCancel() {
+    console.log('ayy');
+  }
+
+  canCancel(): boolean {
+    return this.validateMoney(this.state.formData.money) === null;
   }
 
   validateCode(code: string): string | null {
@@ -56,33 +75,6 @@ export class ProductSelector extends React.Component<Props, State> {
     }
 
     return null;
-  }
-
-  setCode(e: React.ChangeEvent<HTMLInputElement>) {
-    const validationErrors = this.state.validationErrors;
-    const code = e.target.value;
-    const error = this.validateCode(code);
-
-    if (error !== null) {
-      this.setState({
-        code,
-        validationErrors: {
-          ...validationErrors,
-          'code': error
-        }
-      });
-
-      return;
-    }
-
-    const validCodes = this.props.productItems.map((productItem) => productItem.item.code);
-    delete validationErrors['code'];
-
-    this.setState({
-      code,
-      validationErrors,
-      selectedProductItem: this.props.productItems[validCodes.indexOf(code)]
-    });
   }
 
   validateMoney(money: string): string | null {
@@ -105,30 +97,57 @@ export class ProductSelector extends React.Component<Props, State> {
     return null;
   }
 
-  setMoney(e: React.ChangeEvent<HTMLInputElement>) {
-    const validationErrors = this.state.validationErrors;
-    const money = e.target.value;
-    const error = this.validateMoney(money);
+  validate(formData: FormData): ValidationErrors {
+    const keys = Object.keys(formData);
+    const errors: string[] = keys.map((key) => {
+      switch (key) {
+        case 'code':
+          return this.validateCode(formData[key]);
+        case 'money':
+          console.log(formData[key]);
+          return this.validateMoney(formData[key]);
+        default:
+          return null;
+      }
+    }).map((value) => value !== null ? value : '');
 
-    if (error !== null) {
-      this.setState({
-        money,
-        validationErrors: {
-          ...validationErrors,
-          'money': error
-        }
-      });
+    const validationErrors: ValidationErrors = {};
+    for (let i = 0; i < keys.length; i++) {
+      if (errors[i].length === 0) {
+        continue;
+      }
 
-      return;
+      validationErrors[keys[i]] = errors[i];
     }
 
-    delete validationErrors['money'];
+    return validationErrors;
+  }
 
-    this.setState({money, validationErrors});
+  onChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+
+    // resolving new form data
+    const formData = {
+      ...this.state.formData,
+      [name]: value
+    };
+
+    // resolving new validation-errors
+    const validationErrors = this.validate(formData);
+
+    // optionally resolving the selected product-item
+    let selectedProductItem = this.state.selectedProductItem;
+    if (!('code' in validationErrors) && name === 'code') {
+      const validCodes = this.props.productItems.map((productItem) => productItem.item.code);
+      selectedProductItem = this.props.productItems[validCodes.indexOf(value)];
+    }
+
+    this.setState({formData, validationErrors, selectedProductItem});
   }
 
   renderMessage() {
-    let { code, money, validationErrors, selectedProductItem } = this.state;
+    const { validationErrors, selectedProductItem } = this.state;
+    const { code, money } = this.state.formData;
 
     if (!this.canSubmit()) {
       const keys = Object.keys(validationErrors);
@@ -163,7 +182,7 @@ export class ProductSelector extends React.Component<Props, State> {
   }
 
   render() {
-    const { code, money } = this.state;
+    const { code, money } = this.state.formData;
 
     return (
       <div>
@@ -179,7 +198,7 @@ export class ProductSelector extends React.Component<Props, State> {
               type="text"
               value={code}
               placeholder="e.g. A1"
-              onChange={(e) => this.setCode(e as any)}
+              onChange={(e) => this.onChange(e as any)}
             />
           </FormGroup>{' '}
           <FormGroup>
@@ -189,10 +208,11 @@ export class ProductSelector extends React.Component<Props, State> {
               type="text"
               value={money || ''}
               placeholder="e.g. 2.00"
-              onChange={(e) => this.setMoney(e as any)}
+              onChange={(e) => this.onChange(e as any)}
             />
           </FormGroup>{' '}
-          <Button type="submit" disabled={!this.canSubmit()}>Order food</Button>
+          <Button type="submit" disabled={!this.canSubmit()}>Order food</Button>{' '}
+          <Button type="button" disabled={!this.canCancel()} onClick={() => this.onCancel()}>Cancel</Button>
         </Form>
       </div>
     );
