@@ -4,6 +4,7 @@ import { Grid, Row, Col } from 'react-bootstrap';
 import ProductListing from '../containers/ProductListing';
 import ProductSelector from '../containers/ProductSelector';
 import RefundDisplay from '../containers/RefundDisplay';
+import DeliveredProductDisplay from '../containers/DeliveredProductDisplay';
 
 export class App extends React.Component {
   render() {
@@ -15,6 +16,7 @@ export class App extends React.Component {
             <ProductListing />
             <ProductSelector />
             <RefundDisplay />
+            <DeliveredProductDisplay />
           </Col>
         </Row>
       </Grid>

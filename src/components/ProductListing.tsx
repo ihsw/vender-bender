@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Table, Label } from 'react-bootstrap';
 
-import { ProductItem } from '../types';
+import { ProductItem, ProductItems } from '../types';
 
 export interface StateProps {
-  productItems: ProductItem[];
+  productItems: ProductItems;
 }
 
 export interface DispatchProps {
@@ -32,7 +32,9 @@ export class ProductListing extends React.Component<Props> {
   }
 
   render() {
-    if (this.props.productItems.length === 0) {
+    const { productItems } = this.props;
+
+    if (Object.keys(productItems).length === 0) {
       return (
         <p>No products found!</p>
       );
@@ -48,7 +50,7 @@ export class ProductListing extends React.Component<Props> {
           </tr>
         </thead>
         <tbody>
-          {this.props.productItems.map((productItem, i) => this.renderItem(productItem, i))}
+          {Object.keys(productItems).map((code, i) => this.renderItem(productItems[code], i))}
         </tbody>
       </Table>
     );

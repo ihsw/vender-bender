@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { Alert, Form, FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
 
-import { ProductItem } from '../types';
+import { ProductItem, ProductItems } from '../types';
 
 export interface StateProps {
-  productItems: ProductItem[];
+  productItems: ProductItems;
 }
 
 export interface DispatchProps {
   refundChange: (amount: number) => void;
+  orderProduct: (code: string) => void;
 }
 
 export interface OwnProps {
@@ -49,7 +50,7 @@ export class ProductSelector extends React.Component<Props, State> {
   onSubmit(e: React.FormEvent<Form>) {
     e.preventDefault();
 
-    alert('Ordering!');
+    this.props.orderProduct(this.state.formData.code);
   }
 
   canSubmit(): boolean {
@@ -78,7 +79,7 @@ export class ProductSelector extends React.Component<Props, State> {
       return 'Code is blank!';
     }
 
-    const validCodes = this.props.productItems.map((productItem) => productItem.item.code);
+    const validCodes = Object.keys(this.props.productItems);
     if (validCodes.indexOf(code) === -1) {
       return 'Code is not valid!';
     }
@@ -149,8 +150,7 @@ export class ProductSelector extends React.Component<Props, State> {
       selectedProductItem = null;
     } else {
       if (name === 'code') {
-        const validCodes = this.props.productItems.map((productItem) => productItem.item.code);
-        selectedProductItem = this.props.productItems[validCodes.indexOf(value)];
+        selectedProductItem = this.props.productItems[value];
       }
     }
 

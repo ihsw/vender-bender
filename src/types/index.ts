@@ -1,6 +1,11 @@
 export interface StoreState {
-    productItems: ProductItem[];
+    productItems: ProductItems;
     changeRefunded?: number | null;
+    lastProductOrdered?: ProductItem | null;
+}
+
+export interface ProductItems {
+    [key: string]: ProductItem;
 }
 
 export interface ProductItem {

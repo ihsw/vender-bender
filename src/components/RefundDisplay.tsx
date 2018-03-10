@@ -16,7 +16,7 @@ type Props = StateProps & DispatchProps & OwnProps;
 export class RefundDisplay extends React.Component<Props> {
   render() {
     const { changeRefunded } = this.props;
-    console.log(changeRefunded);
+
     if (typeof changeRefunded === 'undefined' || changeRefunded === null) {
       return null;
     }
