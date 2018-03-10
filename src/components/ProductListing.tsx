@@ -18,9 +18,10 @@ type Props = StateProps & DispatchProps & OwnProps;
 export class ProductListing extends React.Component<Props> {
   renderItem(productItem: ProductItem, i: number) {
     return (
-      <tr key={i}>
+      <tr key={i} className={productItem.quantity === 0 ? 'warning' : ''}>
         <th>
           {productItem.item.name} ({productItem.item.code})
+          {productItem.quantity === 0 && <Label bsStyle="warning" style={{marginLeft: '5px'}}>Out of stock!</Label>}
           {productItem.isNew && <Label bsStyle="primary" style={{marginLeft: '5px'}}>New</Label>}
           {productItem.isPopular && <Label bsStyle="success" style={{marginLeft: '5px'}}>Popular!</Label>}
           {productItem.isOnSale && <Label bsStyle="success" style={{marginLeft: '5px'}}>Sale</Label>}
