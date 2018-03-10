@@ -112,7 +112,6 @@ export class ProductSelector extends React.Component<Props, State> {
         case 'code':
           return this.validateCode(formData[key]);
         case 'money':
-          console.log(formData[key]);
           return this.validateMoney(formData[key]);
         default:
           return null;
