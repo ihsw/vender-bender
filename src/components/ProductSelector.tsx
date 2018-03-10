@@ -52,7 +52,10 @@ export class ProductSelector extends React.Component<Props, State> {
   onSubmit(e: React.FormEvent<Form>) {
     e.preventDefault();
 
-    this.props.orderProduct(this.state.formData.code, Number(this.state.formData.money));
+    this.props.orderProduct(
+      this.state.formData.code,
+      Number(Number(this.state.formData.money).toFixed(2))
+    );
     this.setState({
       touched: false,
       formData: {
