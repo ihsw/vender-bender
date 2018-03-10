@@ -26,6 +26,7 @@ interface ValidationErrors {
 }
 
 interface State {
+  touched: boolean;
   formData: FormData;
   validationErrors: ValidationErrors;
   selectedProductItem: ProductItem | null;
@@ -38,6 +39,7 @@ export class ProductSelector extends React.Component<Props, State> {
     super(props);
 
     this.state = {
+      touched: false,
       formData: {
         code: '',
         money: ''
@@ -61,7 +63,7 @@ export class ProductSelector extends React.Component<Props, State> {
   onCancel() {
     this.props.refundChange(Number(this.state.formData.money));
     this.setState({
-      ...this.state,
+      touched: false,
       formData: {
         code: '',
         money: ''
@@ -82,6 +84,11 @@ export class ProductSelector extends React.Component<Props, State> {
     const validCodes = Object.keys(this.props.productItems);
     if (validCodes.indexOf(code) === -1) {
       return 'Code is not valid!';
+    }
+
+    const selectedProductItem = this.state.selectedProductItem;
+    if (selectedProductItem !== null && selectedProductItem.quantity === 0) {
+      return 'Item is out of stock!';
     }
 
     return null;
@@ -141,44 +148,41 @@ export class ProductSelector extends React.Component<Props, State> {
       [name]: value
     };
 
-    // resolving new validation-errors
-    const validationErrors = this.validate(formData);
-
     // optionally resolving the selected product-item
     let selectedProductItem = this.state.selectedProductItem;
-    if ('code' in validationErrors) {
-      selectedProductItem = null;
-    } else {
-      if (name === 'code') {
-        selectedProductItem = this.props.productItems[value];
-      }
+    if (name === 'code') {
+      selectedProductItem = value in this.props.productItems
+        ? this.props.productItems[value]
+        : null;
     }
 
-    this.setState({formData, validationErrors, selectedProductItem});
+    this.setState({touched: true, formData, selectedProductItem});
   }
 
   renderMessage() {
-    const { validationErrors, selectedProductItem } = this.state;
-    const { code, money } = this.state.formData;
-
-    if (!this.canSubmit()) {
-      const keys = Object.keys(validationErrors);
-      if (keys.length > 0) {
-        return (
-          <div>
-            <p>Please enter a code and money.</p>
-            <ul>
-              {keys.map((errorKey, i) => {
-                return (
-                  <li key={i}>{validationErrors[errorKey]}</li>
-                );
-              })}
-            </ul>
-          </div>
-        );
-      }
-
+    if (!this.state.touched) {
       return <p>This vending machine has delicious treats!</p>;
+    }
+
+    const { selectedProductItem, formData } = this.state;
+    const { code, money } = formData;
+
+    const validationErrors = this.validate(formData);
+
+    const keys = Object.keys(validationErrors);
+    if (keys.length > 0) {
+      return (
+        <div>
+          <p>Please enter a code and money.</p>
+          <ul>
+            {keys.map((errorKey, i) => {
+              return (
+                <li key={i}>{validationErrors[errorKey]}</li>
+              );
+            })}
+          </ul>
+        </div>
+      );
     }
 
     if (selectedProductItem === null) {
