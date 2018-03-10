@@ -12,13 +12,16 @@ export const vendors = (state: StoreState, action: VenderBenderAction): StoreSta
       };
     case ORDER_PRODUCT:
       const { productItems } = state;
-      productItems[action.code].quantity -= 1;
+      const orderedProduct = productItems[action.code];
+
+      orderedProduct.quantity -= 1;
+      productItems[action.code] = orderedProduct;
 
       return {
         ...state,
         productItems: {...productItems},
         lastProductOrdered: productItems[action.code],
-        changeRefunded: null
+        changeRefunded: action.amountProvided - orderedProduct.item.price
       };
     default:
       return state;

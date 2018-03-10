@@ -15,8 +15,8 @@ export class App extends React.Component {
             <h1>Virtual Vendor Machine</h1>
             <ProductListing />
             <ProductSelector />
-            <RefundDisplay />
             <DeliveredProductDisplay />
+            <RefundDisplay />
           </Col>
         </Row>
       </Grid>

@@ -15,12 +15,14 @@ export const refundChange = (amount: number): RefundChangeAction => {
 export interface OrderProductAction {
   type: ORDER_PRODUCT;
   code: string;
+  amountProvided: number;
 }
 
-export const orderProduct = (code: string): OrderProductAction => {
+export const orderProduct = (code: string, amountProvided: number): OrderProductAction => {
   return {
     type: ORDER_PRODUCT,
-    code
+    code,
+    amountProvided
   };
 };
 

@@ -9,7 +9,7 @@ export interface StateProps {
 
 export interface DispatchProps {
   refundChange: (amount: number) => void;
-  orderProduct: (code: string) => void;
+  orderProduct: (code: string, amountProvided: number) => void;
 }
 
 export interface OwnProps {
@@ -52,7 +52,7 @@ export class ProductSelector extends React.Component<Props, State> {
   onSubmit(e: React.FormEvent<Form>) {
     e.preventDefault();
 
-    this.props.orderProduct(this.state.formData.code);
+    this.props.orderProduct(this.state.formData.code, Number(this.state.formData.money));
     this.setState({
       touched: false,
       formData: {
