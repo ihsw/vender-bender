@@ -53,6 +53,14 @@ export class ProductSelector extends React.Component<Props, State> {
     e.preventDefault();
 
     this.props.orderProduct(this.state.formData.code);
+    this.setState({
+      touched: false,
+      formData: {
+        code: '',
+        money: ''
+      },
+      validationErrors: {}
+    });
   }
 
   canSubmit(): boolean {
