@@ -7,7 +7,8 @@ export const vendors = (state: StoreState, action: VenderBenderAction): StoreSta
     case REFUND_CHANGE:
       return {
         ...state,
-        changeRefunded: action.amount
+        changeRefunded: action.amount,
+        lastProductOrdered: null
       };
     case ORDER_PRODUCT:
       const { productItems } = state;
@@ -16,7 +17,8 @@ export const vendors = (state: StoreState, action: VenderBenderAction): StoreSta
       return {
         ...state,
         productItems: {...productItems},
-        lastProductOrdered: productItems[action.code]
+        lastProductOrdered: productItems[action.code],
+        changeRefunded: null
       };
     default:
       return state;
