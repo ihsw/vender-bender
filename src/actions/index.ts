@@ -1,4 +1,4 @@
-import { REFUND_CHANGE, ORDER_PRODUCT } from '../constants';
+import { REFUND_CHANGE, ORDER_PRODUCT, RESTOCK_PRODUCT } from '../constants';
 
 export interface RefundChangeAction {
   type: REFUND_CHANGE;
@@ -26,5 +26,18 @@ export const orderProduct = (code: string, amountProvided: number): OrderProduct
   };
 };
 
+export interface RestockProductAction {
+  type: RESTOCK_PRODUCT;
+  code: string;
+}
+
+export const restockProduct = (code: string): RestockProductAction => {
+  return {
+    type: RESTOCK_PRODUCT,
+    code
+  };
+};
+
 export type VenderBenderAction = RefundChangeAction
-  | OrderProductAction;
+  | OrderProductAction
+  | RestockProductAction;

@@ -3,3 +3,6 @@ export type REFUND_CHANGE = typeof REFUND_CHANGE;
 
 export const ORDER_PRODUCT = 'ORDER_PRODUCT';
 export type ORDER_PRODUCT = typeof ORDER_PRODUCT;
+
+export const RESTOCK_PRODUCT = 'RESTOCK_PRODUCT';
+export type RESTOCK_PRODUCT = typeof RESTOCK_PRODUCT;

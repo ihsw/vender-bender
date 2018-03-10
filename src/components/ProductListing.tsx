@@ -8,6 +8,7 @@ export interface StateProps {
 }
 
 export interface DispatchProps {
+  restockProduct: (code: string) => void;
 }
 
 export interface OwnProps {
@@ -16,6 +17,28 @@ export interface OwnProps {
 type Props = StateProps & DispatchProps & OwnProps;
 
 export class ProductListing extends React.Component<Props> {
+  renderQuantity(productItem: ProductItem) {
+    if (productItem.quantity === 0) {
+      return (
+        <div>
+          {productItem.quantity}
+          {' '}
+          <a
+            href=""
+            onClick={(e) => {
+              e.preventDefault();
+              this.props.restockProduct(productItem.item.code);
+            }}
+          >
+            Restock
+          </a>
+        </div>
+      );
+    }
+
+    return productItem.quantity;
+  }
+
   renderItem(productItem: ProductItem, i: number) {
     return (
       <tr key={i} className={productItem.quantity === 0 ? 'warning' : ''}>
@@ -27,7 +50,9 @@ export class ProductListing extends React.Component<Props> {
           {productItem.isOnSale && <Label bsStyle="success" style={{marginLeft: '5px'}}>Sale</Label>}
         </th>
         <td>${productItem.item.price.toFixed(2)}</td>
-        <td>{productItem.quantity}</td>
+        <td>
+          {this.renderQuantity(productItem)}
+        </td>
       </tr>
     );
   }
