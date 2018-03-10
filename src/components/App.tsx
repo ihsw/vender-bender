@@ -3,6 +3,7 @@ import { Grid, Row, Col } from 'react-bootstrap';
 
 import ProductListing from '../containers/ProductListing';
 import ProductSelector from '../containers/ProductSelector';
+import RefundDisplay from '../containers/RefundDisplay';
 
 export class App extends React.Component {
   render() {
@@ -13,6 +14,7 @@ export class App extends React.Component {
             <h1>Virtual Vendor Machine</h1>
             <ProductListing />
             <ProductSelector />
+            <RefundDisplay />
           </Col>
         </Row>
       </Grid>
