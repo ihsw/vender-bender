@@ -1,5 +1,6 @@
 export interface StoreState {
     productItems: ProductItem[];
+    changeRefunded?: number | null;
 }
 
 export interface ProductItem {

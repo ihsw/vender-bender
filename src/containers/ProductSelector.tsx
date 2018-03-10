@@ -1,6 +1,7 @@
 import { connect, Dispatch } from 'react-redux';
 
 import { ProductSelector, StateProps, DispatchProps, OwnProps } from '../components/ProductSelector';
+import { refundChange } from '../actions';
 import { StoreState } from '../types';
 
 export const mapStateToProps = (state: StoreState): StateProps => {
@@ -12,7 +13,9 @@ export const mapStateToProps = (state: StoreState): StateProps => {
 };
 
 export const mapDispatchToProps = (dispatch: Dispatch<ProductSelector>): DispatchProps => {
-  return {};
+  return {
+    refundChange: (amount: number) => refundChange(amount)
+  };
 };
 
 export default connect<StateProps, DispatchProps, OwnProps>(

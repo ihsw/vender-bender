@@ -8,6 +8,7 @@ export interface StateProps {
 }
 
 export interface DispatchProps {
+  refundChange: (amount: number) => void;
 }
 
 export interface OwnProps {
@@ -57,7 +58,14 @@ export class ProductSelector extends React.Component<Props, State> {
   }
 
   onCancel() {
-    console.log('ayy');
+    this.props.refundChange(Number(this.state.formData.money));
+    this.setState({
+      ...this.state,
+      formData: {
+        code: '',
+        money: ''
+      }
+    });
   }
 
   canCancel(): boolean {
@@ -91,7 +99,7 @@ export class ProductSelector extends React.Component<Props, State> {
     if (selectedProductItem !== null && providedMoney < selectedProductItem.item.price) {
       return `Insert more money than $${
         providedMoney.toFixed(2)
-      } to purchase ${selectedProductItem.item.name} ${selectedProductItem.item.name}`;
+      } to purchase ${selectedProductItem.item.name} ${selectedProductItem.item.name}!`;
     }
 
     return null;
