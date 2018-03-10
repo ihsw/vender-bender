@@ -21,9 +21,9 @@ export class ProductListing extends React.Component<Props> {
       <tr key={i}>
         <th>
           {productItem.item.name} ({productItem.item.code})
-          {productItem.isNew && <Label bsStyle="primary" style={{marginLeft: '5px'}}>New!</Label>}
+          {productItem.isNew && <Label bsStyle="primary" style={{marginLeft: '5px'}}>New</Label>}
           {productItem.isPopular && <Label bsStyle="success" style={{marginLeft: '5px'}}>Popular!</Label>}
-          {productItem.isOnSale && <Label bsStyle="success" style={{marginLeft: '5px'}}>Sale!</Label>}
+          {productItem.isOnSale && <Label bsStyle="success" style={{marginLeft: '5px'}}>Sale</Label>}
         </th>
         <td>${productItem.item.price.toFixed(2)}</td>
         <td>{productItem.quantity}</td>
