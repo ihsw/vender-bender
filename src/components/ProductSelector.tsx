@@ -64,7 +64,8 @@ export class ProductSelector extends React.Component<Props, State> {
       formData: {
         code: '',
         money: ''
-      }
+      },
+      validationErrors: {}
     });
   }
 
@@ -99,7 +100,7 @@ export class ProductSelector extends React.Component<Props, State> {
     if (selectedProductItem !== null && providedMoney < selectedProductItem.item.price) {
       return `Insert more money than $${
         providedMoney.toFixed(2)
-      } to purchase ${selectedProductItem.item.name} ${selectedProductItem.item.name}!`;
+      } to purchase ${selectedProductItem.item.name} (${selectedProductItem.item.code})!`;
     }
 
     return null;
@@ -144,9 +145,13 @@ export class ProductSelector extends React.Component<Props, State> {
 
     // optionally resolving the selected product-item
     let selectedProductItem = this.state.selectedProductItem;
-    if (!('code' in validationErrors) && name === 'code') {
-      const validCodes = this.props.productItems.map((productItem) => productItem.item.code);
-      selectedProductItem = this.props.productItems[validCodes.indexOf(value)];
+    if ('code' in validationErrors) {
+      selectedProductItem = null;
+    } else {
+      if (name === 'code') {
+        const validCodes = this.props.productItems.map((productItem) => productItem.item.code);
+        selectedProductItem = this.props.productItems[validCodes.indexOf(value)];
+      }
     }
 
     this.setState({formData, validationErrors, selectedProductItem});
