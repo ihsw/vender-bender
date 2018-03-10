@@ -14,7 +14,7 @@ export const mapStateToProps = (state: StoreState): StateProps => {
 
 export const mapDispatchToProps = (dispatch: Dispatch<ProductSelector>): DispatchProps => {
   return {
-    refundChange: (amount: number) => refundChange(amount)
+    refundChange: (amount: number) => dispatch(refundChange(amount))
   };
 };
 
