@@ -17,7 +17,7 @@ export class RefundDisplay extends React.Component<Props> {
   render() {
     const { changeRefunded } = this.props;
 
-    if (typeof changeRefunded === 'undefined' || changeRefunded === null) {
+    if (typeof changeRefunded === 'undefined' || changeRefunded === null || changeRefunded === 0) {
       return null;
     }
 
