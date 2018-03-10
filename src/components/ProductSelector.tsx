@@ -214,7 +214,7 @@ export class ProductSelector extends React.Component<Props, State> {
     return (
       <div>
         <Alert bsStyle="info">
-          <h4>Order from Vending Machine</h4>
+          <h4>Order from vending machine</h4>
           {this.renderMessage()}
         </Alert>
         <Form inline={true} onSubmit={(e) => this.onSubmit(e)}>
